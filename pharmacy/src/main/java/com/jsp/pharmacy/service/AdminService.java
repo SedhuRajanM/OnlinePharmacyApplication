@@ -12,7 +12,7 @@ import com.jsp.pharmacy.dao.AdminDao;
 import com.jsp.pharmacy.dto.AdminDto;
 import com.jsp.pharmacy.entity.Admin;
 import com.jsp.pharmacy.exception.AdminIdNotFoundException;
-
+import com.jsp.pharmacy.exception.AdminInvalidPhoneNumber;
 import com.jsp.pharmacy.exception.AdminInvalidtPasswordException;
 import com.jsp.pharmacy.exception.AdminNotFoundWithThisEmail;
 import com.jsp.pharmacy.util.ResponseStructure;
@@ -155,6 +155,34 @@ public class AdminService {
 		}
 		else 
 			throw new AdminNotFoundWithThisEmail("Sorry failed to login");
+	}
+
+	public ResponseEntity<ResponseStructure<AdminDto>> resetAdminPassword(long phoneNumber, String email,
+			String newPassword) {
+		
+		Admin dbAdmin = dao.findByEmail(email);
+		
+		if(dbAdmin!=null) {
+			
+			if(dbAdmin.getAdminPhoneNumber()==phoneNumber) {
+				dbAdmin.setAdminPassword(newPassword);
+				dao.updateAdmin(dbAdmin.getAdminid(), dbAdmin);
+				
+				dto.setAdminAddress(dbAdmin.getAdminAddress());
+				dto.setAdminid(dbAdmin.getAdminid());
+				dto.setAdminName(dbAdmin.getAdminName());
+				
+
+				ResponseStructure<AdminDto> structure=new ResponseStructure<>();
+				structure.setMessage("Reset Password Successfull");
+				structure.setHttpstatus(HttpStatus.FOUND.value());
+				structure.setData(dto);
+				return new ResponseEntity<ResponseStructure<AdminDto>>(structure,HttpStatus.FOUND);	
+			}
+			else throw new AdminInvalidPhoneNumber("sorry failed to reset password");
+		}
+		else
+			throw new AdminNotFoundWithThisEmail("Sorry failed to reset password");
 	}
 
 }

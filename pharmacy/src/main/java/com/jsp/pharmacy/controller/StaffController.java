@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jsp.pharmacy.dto.AdminDto;
 import com.jsp.pharmacy.dto.StaffDto;
 import com.jsp.pharmacy.entity.Staff;
 import com.jsp.pharmacy.service.StaffService;
@@ -48,5 +50,11 @@ public class StaffController {
 	public ResponseEntity<ResponseStructure<StaffDto>> loginStaff(@RequestParam String email,@RequestParam String password){
 
 		return service.loginStaff(email,password);
+	}
+	
+	@PostMapping("/resetstaffpassword")
+	public ResponseEntity<ResponseStructure<StaffDto>> resetAdmimPassword(@RequestParam long phoneNumber, @RequestParam String email,@RequestParam String newPassword){
+
+		return service.resetStaffPassword(phoneNumber,email,newPassword);
 	}
 }

@@ -21,6 +21,7 @@ import com.jsp.pharmacy.exception.MedicalStoreIdNotFoundException;
 import com.jsp.pharmacy.exception.StaffIdNotFoundException;
 import com.jsp.pharmacy.exception.StaffInvalidEmailException;
 import com.jsp.pharmacy.exception.StaffInvalidPasswordException;
+import com.jsp.pharmacy.exception.StaffInvalidPhoneNumber;
 import com.jsp.pharmacy.util.ResponseStructure;
 
 @Service
@@ -200,5 +201,33 @@ public class StaffService {
 		else
 			throw new StaffInvalidEmailException("Sorry failed to loign");
 		
+	}
+
+	public ResponseEntity<ResponseStructure<StaffDto>> resetStaffPassword(long phoneNumber, String email,
+			String newPassword) {
+		Staff dbStaff= dao.findByEmail(email);
+		
+		if(dbStaff!=null) {
+			
+			if(dbStaff.getPhoneNumber()==phoneNumber) {
+				dbStaff.setStaffPassword(newPassword);
+				dao.updateStaff(dbStaff.getStaffId(), dbStaff);
+				
+				StaffDto staffDto=this.mapper.map(dbStaff, StaffDto.class);
+				
+				
+				//response structure 
+				ResponseStructure<StaffDto> structure=new ResponseStructure<>();
+				structure.setMessage("Staff Password reset  successfull");
+				structure.setHttpstatus(HttpStatus.FOUND.value());
+				structure.setData(staffDto);
+				
+				return new ResponseEntity<ResponseStructure<StaffDto>>(structure,HttpStatus.FOUND);
+			}
+			else
+				throw new StaffInvalidPhoneNumber("sorry failed to reset the password");
+		}
+		else
+			throw new StaffInvalidEmailException("sorry failed to rset the password");
 	}
 }

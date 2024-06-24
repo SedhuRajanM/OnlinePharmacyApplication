@@ -54,4 +54,11 @@ public class AdminController {
 
 		return service.loginAdmin(email,password);
 	}
+
+	@PostMapping("/resetadminpassword")
+	public ResponseEntity<ResponseStructure<AdminDto>> resetAdmimPassword(@RequestParam long phoneNumber, @RequestParam String email,@RequestParam String newPassword){
+
+		return service.resetAdminPassword(phoneNumber,email,newPassword);
+	}
+
 }

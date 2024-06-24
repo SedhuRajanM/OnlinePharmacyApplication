@@ -207,4 +207,41 @@ public class PharmacyExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.NOT_FOUND);
 	}
+	
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> customerInvaliPhoneNumber(CustomerInvalidPhoneNumber exception){
+		
+		ResponseStructure<String>  structure =new ResponseStructure<>();
+		structure.setMessage(">>> ! CUSTOMER INVALID PHONENUMBER ! <<<");
+		structure.setHttpstatus(HttpStatus.NOT_FOUND.value());
+		structure.setData(exception.getMessage());
+		
+		return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.NOT_FOUND);
+	}
+	
+	
+	
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> adminInvaliPhoneNumber(AdminInvalidPhoneNumber exception){
+		
+		ResponseStructure<String>  structure =new ResponseStructure<>();
+		structure.setMessage(">>> ! ADMIN INVALID PHONENUMBER ! <<<");
+		structure.setHttpstatus(HttpStatus.NOT_FOUND.value());
+		structure.setData(exception.getMessage());
+		
+		return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.NOT_FOUND);
+	}
+	
+
+	@ExceptionHandler
+	public ResponseEntity<ResponseStructure<String>> staffInvaliPhoneNumber(StaffInvalidPhoneNumber exception){
+		
+		ResponseStructure<String>  structure =new ResponseStructure<>();
+		structure.setMessage(">>> ! Staff INVALID PHONENUMBER ! <<<");
+		structure.setHttpstatus(HttpStatus.NOT_FOUND.value());
+		structure.setData(exception.getMessage());
+		
+		return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.NOT_FOUND);
+	}
 }

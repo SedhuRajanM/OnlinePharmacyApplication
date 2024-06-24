@@ -21,6 +21,7 @@ import com.jsp.pharmacy.exception.AddressIdNotFoundException;
 import com.jsp.pharmacy.exception.CustomerEmailNotFoundException;
 import com.jsp.pharmacy.exception.CustomerIdNotFoundException;
 import com.jsp.pharmacy.exception.CustomerInvalidPasswordException;
+import com.jsp.pharmacy.exception.CustomerInvalidPhoneNumber;
 import com.jsp.pharmacy.util.ResponseStructure;
 
 @Service
@@ -230,5 +231,31 @@ public class CustomerService {
 		}
 		else
 			throw new CustomerEmailNotFoundException("Sorry failed to login");
+	}
+
+	public ResponseEntity<ResponseStructure<CustomerDto>> resetPassword(long phoneNumber, String email,
+			String newPassword) {
+		Customer dbCustomer=dao.findCustomerByEmail(email);
+		
+		if(dbCustomer!=null) {
+			
+			if(dbCustomer.getPhoneNumber()==phoneNumber) {
+				dbCustomer.setPassword(newPassword);
+				dao.updateCustomer(dbCustomer.getCustomerId(), dbCustomer);
+				
+				CustomerDto customerDto= this.mapper.map(dbCustomer, CustomerDto.class);
+				
+				ResponseStructure<CustomerDto> structure=new ResponseStructure<>();
+				structure.setMessage("Customer Password reset Successfull");
+				structure.setHttpstatus(HttpStatus.FOUND.value());
+				structure.setData(customerDto);
+				
+				return new  ResponseEntity<ResponseStructure<CustomerDto>>(structure,HttpStatus.FOUND);
+			}
+			else 
+				throw new CustomerInvalidPhoneNumber("Soryy failed to reset the password");
+		}
+		else 
+			throw new CustomerEmailNotFoundException("Soryy failed to reset the Password");
 	}
 }

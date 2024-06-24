@@ -48,4 +48,10 @@ public class CustomerController {
 		return service.loginCustomer(email,password);
 	}
 	
+	@PostMapping("/resetpassword")
+	public ResponseEntity<ResponseStructure<CustomerDto>> resetCustomer(@RequestParam long phoneNumber, @RequestParam String email,
+			@RequestParam String newPassword){
+	
+		return service.resetPassword(phoneNumber,email,newPassword);
+	}
 }
