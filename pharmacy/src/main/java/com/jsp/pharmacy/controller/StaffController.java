@@ -53,7 +53,7 @@ public class StaffController {
 	}
 	
 	@PostMapping("/resetstaffpassword")
-	public ResponseEntity<ResponseStructure<StaffDto>> resetAdmimPassword(@RequestParam long phoneNumber, @RequestParam String email,@RequestParam String newPassword){
+	public ResponseEntity<ResponseStructure<StaffDto>> resetStaffPassword(@RequestParam long phoneNumber, @RequestParam String email,@RequestParam String newPassword){
 
 		return service.resetStaffPassword(phoneNumber,email,newPassword);
 	}
